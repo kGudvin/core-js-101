@@ -204,16 +204,36 @@ function extractEmails(s) {
  */
 function getRectangleString(w, h) {
   let resultingString = '';
-  for (let index = 0; index <= h; index += 1) {
-    for (let j = 0; j < w; j += 1) {
-      if (j === 0 && index === 0) {
-        resultingString += '┌';
+  function drawString(wd, starter, finisher, spacer) {
+    resultingString += starter;
+    for (let index = 0; index < w - 2; index += 1) {
+      resultingString += spacer;
+    }
+    resultingString += finisher;
+    resultingString += '\n';
+  }
+  for (let row = 0; row < h; row += 1) {
+    if (row === 0 || row === h - 1) {
+      if (row === 0) {
+        const starter = '┌';
+        const finisher = '┐';
+        const spacer = '─';
+        drawString(w, starter, finisher, spacer);
       }
-      if (index === h) {
-        resultingString += '└';
+      if (row === h - 1) {
+        const starter = '└';
+        const finisher = '┘';
+        const spacer = '─';
+        drawString(w, starter, finisher, spacer);
       }
+    } else {
+      const starter = '│';
+      const finisher = '│';
+      const spacer = ' ';
+      drawString(w, starter, finisher, spacer);
     }
   }
+  return resultingString;
 }
 
 /**
@@ -232,8 +252,19 @@ function getRectangleString(w, h) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  const rotation = 13;
+  const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+  let res = '';
+  for (let index = 0; index < str.length; index += 1) {
+    res +=
+      alphabet[
+        alphabet.indexOf(
+          alphabet.indexOf(str[index] + rotation) % alphabet.length
+        )
+      ];
+  }
+  return res;
 }
 
 /**
