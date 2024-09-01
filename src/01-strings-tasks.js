@@ -5,6 +5,8 @@
  *                                                                                           *
  ******************************************************************************************* */
 
+// const { prototype, call } = require('../extensions/it-optional');
+
 /**
  * Returns the result of concatenation of two strings.
  *
@@ -288,7 +290,7 @@ function encodeToRot13(str) {
  *   isString(new String('test')) => true
  */
 function isString(str) {
-  throw new Error('Not implemented');
+  return Object.prototype.toString.call(str) === '[object String]';
 }
 
 /**
@@ -315,8 +317,68 @@ function isString(str) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
-  throw new Error('Not implemented');
+function getCardId(str) {
+  const arrOfElements = [
+    'A♣',
+    '2♣',
+    '3♣',
+    '4♣',
+    '5♣',
+    '6♣',
+    '7♣',
+    '8♣',
+    '9♣',
+    '10♣',
+    'J♣',
+    'Q♣',
+    'K♣',
+    'A♦',
+    '2♦',
+    '3♦',
+    '4♦',
+    '5♦',
+    '6♦',
+    '7♦',
+    '8♦',
+    '9♦',
+    '10♦',
+    'J♦',
+    'Q♦',
+    'K♦',
+    'A♥',
+    '2♥',
+    '3♥',
+    '4♥',
+    '5♥',
+    '6♥',
+    '7♥',
+    '8♥',
+    '9♥',
+    '10♥',
+    'J♥',
+    'Q♥',
+    'K♥',
+    'A♠',
+    '2♠',
+    '3♠',
+    '4♠',
+    '5♠',
+    '6♠',
+    '7♠',
+    '8♠',
+    '9♠',
+    '10♠',
+    'J♠',
+    'Q♠',
+    'K♠',
+  ];
+  for (let i = 0; i < arrOfElements.length; i += 1) {
+    const element = str;
+    if (element === arrOfElements[i]) {
+      return i;
+    }
+  }
+  return false;
 }
 
 module.exports = {
