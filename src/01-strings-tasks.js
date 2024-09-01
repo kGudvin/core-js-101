@@ -254,15 +254,22 @@ function getRectangleString(w, h) {
  */
 function encodeToRot13(str) {
   const rotation = 13;
-  const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+  const al = 'abcdefghijklmnopqrstuvwxyz';
   let res = '';
-  for (let index = 0; index < str.length; index += 1) {
-    res +=
-      alphabet[
-        alphabet.indexOf(
-          alphabet.indexOf(str[index] + rotation) % alphabet.length
-        )
-      ];
+  for (let i = 0; i < str.length; i += 1) {
+    let isLower = true;
+    const currentLetter = str[i];
+    if (currentLetter === currentLetter.toUpperCase()) {
+      isLower = false;
+    }
+    const iOfLB = al.indexOf(currentLetter.toLowerCase());
+    if (iOfLB === -1) {
+      res += currentLetter;
+    } else if (isLower) {
+      res += al[(iOfLB + rotation) % al.length];
+    } else {
+      res += al[(iOfLB + rotation) % al.length].toUpperCase();
+    }
   }
   return res;
 }
@@ -280,7 +287,7 @@ function encodeToRot13(str) {
  *   isString('test') => true
  *   isString(new String('test')) => true
  */
-function isString(/* value */) {
+function isString(str) {
   throw new Error('Not implemented');
 }
 
