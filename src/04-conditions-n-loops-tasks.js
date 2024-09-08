@@ -1,3 +1,4 @@
+/* eslint-disable comma-dangle */
 /* *************************************************************************************************
  *                                                                                                *
  * Please read the following tutorial before implementing tasks:                                   *
@@ -280,8 +281,14 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  const numStr = num
+    .toString()
+    .split('')
+    .map((el) => +el);
+  return numStr.reduce((acc, v) => acc + v, 0).toString().length > 1
+    ? getDigitalRoot(numStr.reduce((acc, v) => acc + v, 0).toString())
+    : numStr.reduce((acc, v) => acc + v, 0);
 }
 
 /**
@@ -305,8 +312,29 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const matching = {
+    ')': '(',
+    ']': '[',
+    '}': '{',
+    '>': '<',
+  };
+  const strArr = str.split('');
+  const stack = [];
+  strArr.map((el) => {
+    if ('([{<'.includes(el)) {
+      stack.push(el);
+    }
+    if (')]}>'.includes(el)) {
+      const x = stack.pop();
+      if (x !== matching[el]) {
+        stack.push(x);
+        return false;
+      }
+    }
+    return el;
+  });
+  return stack.length === 0;
 }
 
 /**
