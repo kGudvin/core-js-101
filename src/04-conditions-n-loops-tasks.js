@@ -1,3 +1,5 @@
+/* eslint-disable operator-linebreak */
+/* eslint-disable indent */
 /* eslint-disable comma-dangle */
 /* *************************************************************************************************
  *                                                                                                *
@@ -132,8 +134,24 @@ function isTriangle(a, b, c) {
  *   { top:20, left:20, width: 20, height: 20 }    =>  false
  *
  */
-function doRectanglesOverlap(/* rect1, rect2 */) {
-  throw new Error('Not implemented');
+function doRectanglesOverlap(rect1, rect2) {
+  // Вычисляем границы первого прямоугольника
+  const rect1Right = rect1.left + rect1.width; // Правая граница
+  const rect1Bottom = rect1.top + rect1.height; // Нижняя граница
+
+  // Вычисляем границы второго прямоугольника
+  const rect2Right = rect2.left + rect2.width; // Правая граница
+  const rect2Bottom = rect2.top + rect2.height; // Нижняя граница
+
+  // Проверяем, пересекаются ли прямоугольники
+  return !(
+    rect1Right < rect2.left || // rect1 полностью слева от rect2
+    // eslint-disable-next-line operator-linebreak
+    rect1.left > rect2Right || // rect1 полностью справа от rect2
+    // eslint-disable-next-line operator-linebreak
+    rect1Bottom < rect2.top || // rect1 полностью выше rect2
+    rect1.top > rect2Bottom
+  ); // rect1 полностью ниже rect2;
 }
 
 /**
@@ -269,8 +287,23 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const number = ccn.toString();
+  const digits = number.replace(/\D/g, '').split('').map(Number);
+  let sum = 0;
+  let isSecond = false;
+  for (let i = digits.length - 1; i >= 0; i -= 1) {
+    let digit = digits[i];
+    if (isSecond) {
+      digit *= 2;
+      if (digit > 9) {
+        digit -= 9;
+      }
+    }
+    sum += digit;
+    isSecond = !isSecond;
+  }
+  return sum % 10 === 0;
 }
 
 /**
@@ -370,7 +403,7 @@ function toNaryString(num, n) {
 /**
  * Returns the common directory path for specified array of full filenames.
  *
- * @param {array} pathes
+ * @param {array} paths
  * @return {string}
  *
  * @example:
@@ -379,16 +412,44 @@ function toNaryString(num, n) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(paths) {
+  if (paths.length === 0) return '';
+
+  const firstPath = paths[0];
+  let commonPath = '';
+  let lastSeparatorIndex = -1;
+
+  for (let i = 0; i < firstPath.length; i += 1) {
+    const char = firstPath[i];
+    let isCommon = true;
+
+    for (let j = 1; j < paths.length; j += 1) {
+      if (i >= paths[j].length || paths[j][i] !== char) {
+        isCommon = false;
+        break;
+      }
+    }
+
+    if (isCommon) {
+      commonPath += char;
+      if (char === '/') {
+        lastSeparatorIndex = commonPath.length - 1;
+      }
+    } else {
+      break;
+    }
+  }
+  return lastSeparatorIndex !== -1
+    ? commonPath.slice(0, lastSeparatorIndex + 1)
+    : '';
 }
 
 /**
  * Returns the product of two specified matrixes.
  * See details: https://en.wikipedia.org/wiki/Matrix_multiplication
  *
- * @param {array} m1
- * @param {array} m2
+ * @param {array} A
+ * @param {array} B
  * @return {array}
  *
  * @example:
@@ -401,8 +462,21 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(A, B) {
+  const m = A.length; // Количество строк в A
+  const n = A[0].length; // Количество столбцов в A (и строк в B)
+  const p = B[0].length; // Количество столбцов в B
+  const C = Array.from({ length: m }, () => Array(p).fill(0)); // Результирующая матрица C
+
+  for (let i = 0; i < m; i += 1) {
+    for (let j = 0; j < p; j += 1) {
+      for (let k = 0; k < n; k += 1) {
+        C[i][j] += A[i][k] * B[k][j]; // Умножение и суммирование
+      }
+    }
+  }
+
+  return C;
 }
 
 /**
